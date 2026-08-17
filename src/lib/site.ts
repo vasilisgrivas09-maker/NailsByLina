@@ -8,10 +8,21 @@ export const SITE_PHONE = '6940132888';
 export const SITE_PHONE_DISPLAY = '6940 132 888';
 export const SITE_PHONE_E164 = '+306940132888';
 
-export const SITE_URL = (process.env.NEXT_PUBLIC_SITE_URL || 'http://localhost:3000').replace(
-  /\/$/,
-  '',
-);
+function resolveSiteUrl(): string {
+  const explicit = process.env.NEXT_PUBLIC_SITE_URL;
+  if (explicit) {
+    return explicit.replace(/\/$/, '');
+  }
+
+  const vercelProduction = process.env.VERCEL_PROJECT_PRODUCTION_URL;
+  if (vercelProduction) {
+    return `https://${vercelProduction.replace(/\/$/, '')}`;
+  }
+
+  return 'http://localhost:3000';
+}
+
+export const SITE_URL = resolveSiteUrl();
 
 export const SITE_TITLE = 'Μανικιούρ Αγρίνιο | Elegant Nails – Ημιμόνιμο & Gel';
 export const SITE_DESCRIPTION =
