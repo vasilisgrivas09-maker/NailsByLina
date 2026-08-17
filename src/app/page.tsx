@@ -4,7 +4,12 @@ import HeroSection from '@/app/components/HeroSection';
 import ServicesSection from '@/app/components/ServicesSection';
 import GallerySection from '@/app/components/GallerySection';
 import ContactSection from '@/app/components/ContactSection';
-import FloatingContactButton from '@/app/components/FloatingContactButton';
+import dynamic from 'next/dynamic';
+
+const FloatingContactButton = dynamic(
+  () => import('@/app/components/FloatingContactButton'),
+  { ssr: false },
+);
 
 export default function HomePage() {
   return (

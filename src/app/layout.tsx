@@ -17,16 +17,18 @@ import {
 
 const fraunces = Fraunces({
   subsets: ['latin'],
-  weight: ['300', '400', '500', '600', '700'],
+  weight: ['300', '400'],
   variable: '--font-fraunces',
   display: 'swap',
+  preload: true,
 });
 
 const dmSans = DM_Sans({
-  subsets: ['latin'],
-  weight: ['300', '400', '500', '600'],
+  subsets: ['latin', 'latin-ext'],
+  weight: ['300', '400', '500'],
   variable: '--font-dm-sans',
   display: 'swap',
+  preload: true,
 });
 
 export const viewport: Viewport = {

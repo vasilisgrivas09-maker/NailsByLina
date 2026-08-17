@@ -3,8 +3,10 @@
 import React, { useState, useEffect } from 'react';
 import AppLogo from '@/components/ui/AppLogo';
 import Link from 'next/link';
-import PriceModal from '@/app/components/PriceModal';
+import dynamic from 'next/dynamic';
 import { INSTAGRAM_URL } from '@/lib/site';
+
+const PriceModal = dynamic(() => import('@/app/components/PriceModal'), { ssr: false });
 
 const navLinks = [
   { label: 'Αρχική', href: '/#home', type: 'anchor' },
