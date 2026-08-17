@@ -1,0 +1,24 @@
+export const INSTAGRAM_URL =
+  'https://www.instagram.com/liapilamprini/?utm_source=ig_web_button_share_sheet';
+
+export const SITE_NAME = 'Elegant Nails';
+export const SITE_BRAND = 'NailsByLina';
+export const SITE_CITY = 'Αγρίνιο';
+export const SITE_PHONE = '6940132888';
+export const SITE_PHONE_DISPLAY = '6940 132 888';
+export const SITE_PHONE_E164 = '+306940132888';
+
+export const SITE_URL = (process.env.NEXT_PUBLIC_SITE_URL || 'http://localhost:3000').replace(
+  /\/$/,
+  '',
+);
+
+export const SITE_TITLE = 'Μανικιούρ Αγρίνιο | Elegant Nails – Ημιμόνιμο & Gel';
+export const SITE_DESCRIPTION =
+  'Nail studio στο Αγρίνιο για ημιμόνιμο, gel, ενίσχυση και nail art. Κλείστε ραντεβού στο Instagram και απολαύστε πολυτέλεια σε κάθε λεπτομέρεια.';
+
+export const OG_IMAGE = '/assets/images/4.webp';
+
+export const GALLERY_TITLE = 'Γκαλερί Νυχιών Αγρίνιο';
+export const GALLERY_DESCRIPTION =
+  'Δείτε εργασίες ημιμόνιμου, gel και nail art από το Elegant Nails στο Αγρίνιο. Εμπνευστείτε και κλείστε το ραντεβού σας.';
