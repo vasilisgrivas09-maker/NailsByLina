@@ -61,6 +61,8 @@ export default function GallerySection() {
                   src={image.src}
                   alt={image.alt}
                   fill
+                  loading="lazy"
+                  quality={70}
                   sizes="(max-width: 640px) 100vw, 33vw"
                   className="object-cover transition-transform duration-700 ease-out will-change-transform group-hover:scale-[1.08]"
                 />

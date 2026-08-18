@@ -1,14 +1,26 @@
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import HeroSection from '@/app/components/HeroSection';
-import ServicesSection from '@/app/components/ServicesSection';
-import GallerySection from '@/app/components/GallerySection';
-import ContactSection from '@/app/components/ContactSection';
 import dynamic from 'next/dynamic';
+
+const ServicesSection = dynamic(
+  () => import('@/app/components/ServicesSection'),
+  { ssr: true, loading: () => null }
+);
+
+const GallerySection = dynamic(
+  () => import('@/app/components/GallerySection'),
+  { ssr: true, loading: () => null }
+);
+
+const ContactSection = dynamic(
+  () => import('@/app/components/ContactSection'),
+  { ssr: true, loading: () => null }
+);
 
 const FloatingContactButton = dynamic(
   () => import('@/app/components/FloatingContactButton'),
-  { ssr: false },
+  { ssr: false, loading: () => null }
 );
 
 export default function HomePage() {

@@ -121,6 +121,10 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="el" className={`${fraunces.variable} ${dmSans.variable}`}>
+      <head>
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
+      </head>
       <body className={dmSans.className}>
         <JsonLd data={salonJsonLd} />
         <JsonLd data={websiteJsonLd} />

@@ -54,7 +54,7 @@ export default function HeroSection() {
           style={{ textShadow: '0 1px 8px rgba(0,0,0,0.6)' }}
         >
           Elegant{' '}
-          <span className="italic font-light text-[#E8C765]">Nails</span>
+          <span className="italic font-semibold" style={{ color: '#F3DDA0' }}>Nails</span>
         </h1>
 
         <div className="animate-fade-in-2 gold-line-short mb-8 mx-auto md:mx-0" />
