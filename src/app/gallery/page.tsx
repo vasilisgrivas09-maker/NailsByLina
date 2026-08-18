@@ -6,7 +6,7 @@ import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import AppImage from '@/components/ui/AppImage';
 import FloatingContactButton from '@/app/components/FloatingContactButton';
-import { motion, AnimatePresence } from 'framer-motion';
+import { SITE_URL } from '@/lib/site';
 
 interface GalleryImage {
   id: number;
@@ -36,8 +36,8 @@ const PRIORITY_COUNT = 4;
 // και πόσες προσθέτουμε κάθε φορά που ο χρήστης πλησιάζει το τέλος της λίστας.
 // Αυτό αντικαθιστά την ανάγκη για βαριά virtualization βιβλιοθήκη (π.χ. react-window)
 // όσο ο αριθμός εικόνων παραμένει σε λογικά όρια (μέχρι μερικές εκατοντάδες).
-const INITIAL_BATCH = 32;
-const BATCH_SIZE = 12;
+const INITIAL_BATCH = 12;
+const BATCH_SIZE = 8;
 
 // SVG Icons
 const XIcon = ({ size = 24, className = '' }: { size?: number; className?: string }) => (
@@ -83,6 +83,8 @@ const GalleryContent = () => {
 
   const previousFocusRef = useRef<HTMLElement | null>(null);
   const closeButtonRef = useRef<HTMLButtonElement>(null);
+  const previousBodyOverflowRef = useRef<string>('');
+  const previousHtmlOverflowRef = useRef<string>('');
 
   // ✅ Φόρτωσε την επόμενη παρτίδα εικόνων ΠΡΙΝ ο χρήστης φτάσει στο τέλος (rootMargin)
   useEffect(() => {
@@ -113,6 +115,8 @@ const GalleryContent = () => {
 
   const openLightbox = (index: number) => {
     previousFocusRef.current = document.activeElement as HTMLElement;
+    previousBodyOverflowRef.current = document.body.style.overflow;
+    previousHtmlOverflowRef.current = document.documentElement.style.overflow;
     setLightboxIndex(index);
     document.body.style.overflow = 'hidden';
     document.documentElement.style.overflow = 'hidden';
@@ -120,8 +124,8 @@ const GalleryContent = () => {
 
   const closeLightbox = useCallback(() => {
     setLightboxIndex(null);
-    document.body.style.overflow = 'auto';
-    document.documentElement.style.overflow = 'auto';
+    document.body.style.overflow = previousBodyOverflowRef.current;
+    document.documentElement.style.overflow = previousHtmlOverflowRef.current;
     previousFocusRef.current?.focus();
   }, []);
 
@@ -138,7 +142,7 @@ const GalleryContent = () => {
     if (lightboxIndex !== null) {
       closeButtonRef.current?.focus();
     }
-  }, [lightboxIndex !== null]); // eslint-disable-line react-hooks/exhaustive-deps
+  }, [lightboxIndex]);
 
   // ✅ Preload της επόμενης & προηγούμενης εικόνας ώστε τα βέλη να νιώθουν στιγμιαία
   useEffect(() => {
@@ -174,8 +178,8 @@ const GalleryContent = () => {
   // Καθαρισμός overflow σε unmount (π.χ. αλλαγή σελίδας ενώ είναι ανοιχτό το lightbox)
   useEffect(() => {
     return () => {
-      document.body.style.overflow = 'auto';
-      document.documentElement.style.overflow = 'auto';
+      document.body.style.overflow = previousBodyOverflowRef.current;
+      document.documentElement.style.overflow = previousHtmlOverflowRef.current;
     };
   }, []);
 
@@ -208,7 +212,7 @@ const GalleryContent = () => {
   // JSON-LD structured data για SEO (ImageGallery) — αφορά ΟΛΕΣ τις εικόνες,
   // ανεξάρτητα από το πόσες είναι ήδη ορατές στο progressive rendering
   const jsonLd = useMemo(() => {
-    const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || '';
+    const siteUrl = SITE_URL.replace(/\/$/, '');
     return {
       '@context': 'https://schema.org',
       '@type': 'ImageGallery',
@@ -232,12 +236,7 @@ const GalleryContent = () => {
 
       <div className="max-w-7xl mx-auto">
         {/* Gallery Header */}
-        <motion.div
-          className="text-center mb-12"
-          initial={{ opacity: 0, y: -20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6 }}
-        >
+        <div className="text-center mb-12">
           <p className="text-xs tracking-[0.3em] uppercase text-rose-500 mb-4">Gallery</p>
           <h2 className="text-3xl md:text-4xl font-light text-white mb-4">50 Δημιουργίες</h2>
           <div className="w-12 h-0.5 bg-rose-500 mx-auto mb-6" />
@@ -250,24 +249,20 @@ const GalleryContent = () => {
               {galleryImages.length} φωτογραφίες
             </span>
           </div>
-        </motion.div>
+        </div>
 
         <ul role="list" className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 md:gap-4">
           {visibleImages.map((image, index) => (
-            <motion.li
+            <li
               key={image.id}
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.4, delay: (index % 12) * 0.05 }}
-              className="relative"
+              className="relative animate-[fadeInUp_0.35s_ease-out]"
               style={{ height: 280 + (index % 5) * 30 }}
             >
-              <motion.div
+              <div
                 role="button"
                 tabIndex={0}
                 aria-label={`Προβολή εικόνας ${image.id} σε πλήρη οθόνη`}
-                whileHover={{ scale: 1.03, transition: { duration: 0.2 } }}
-                className="relative group cursor-pointer overflow-hidden rounded-lg bg-gray-900 border border-gray-800 w-full h-full outline-none focus-visible:ring-2 focus-visible:ring-rose-500"
+                className="relative group cursor-pointer overflow-hidden rounded-lg bg-gray-900 border border-gray-800 w-full h-full outline-none focus-visible:ring-2 focus-visible:ring-rose-500 transition-transform duration-200 will-change-transform hover:scale-[1.02]"
                 onClick={() => openLightbox(galleryImages.findIndex((g) => g.id === image.id))}
                 onKeyDown={(e) => handleThumbKeyDown(e, galleryImages.findIndex((g) => g.id === image.id))}
               >
@@ -283,13 +278,13 @@ const GalleryContent = () => {
                 </div>
 
                 {/* Hover Overlay */}
-                <motion.div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent opacity-0 group-hover:opacity-100 group-focus-visible:opacity-100 transition-opacity duration-300 pointer-events-none">
+                <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent opacity-0 group-hover:opacity-100 group-focus-visible:opacity-100 transition-opacity duration-300 pointer-events-none">
                   <div className="absolute bottom-4 right-4">
                     <span className="text-white/60 text-xs font-light">#{image.id}</span>
                   </div>
-                </motion.div>
-              </motion.div>
-            </motion.li>
+                </div>
+              </div>
+            </li>
           ))}
         </ul>
 
@@ -298,45 +293,33 @@ const GalleryContent = () => {
           <div ref={sentinelRef} aria-hidden="true" className="h-1 w-full" />
         )}
 
-        <motion.div
-          className="text-center mt-8 text-gray-500 text-sm"
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: 0.5 }}
-        >
+        <div className="text-center mt-8 text-gray-500 text-sm">
           {galleryImages.length} φωτογραφίες • Πάτησε για μεγέθυνση
-        </motion.div>
+        </div>
       </div>
 
       {/* Lightbox - Full Screen */}
-      <AnimatePresence>
-        {currentImage && lightboxIndex !== null && (
-          <motion.div
+      {currentImage && lightboxIndex !== null && (
+          <div
             role="dialog"
             aria-modal="true"
             aria-label="Προβολή εικόνας σε πλήρη οθόνη"
-            className="fixed inset-0 z-[9999] bg-black/95 backdrop-blur-sm flex items-center justify-center"
+            className="fixed inset-0 z-[9999] bg-black/95 backdrop-blur-sm flex items-center justify-center animate-[fadeInUp_0.18s_ease-out]"
             onClick={closeLightbox}
             onTouchStart={handleTouchStart}
             onTouchMove={handleTouchMove}
             onTouchEnd={handleTouchEnd}
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            transition={{ duration: 0.3 }}
           >
             {/* Close Button */}
-            <motion.button
+            <button
               ref={closeButtonRef}
               type="button"
               onClick={closeLightbox}
               className="absolute top-4 right-4 z-50 text-white/80 hover:text-white transition-colors p-2"
               aria-label="Κλείσιμο πλήρους προβολής"
-              whileHover={{ scale: 1.1 }}
-              whileTap={{ scale: 0.9 }}
             >
               <XIcon size={28} className="text-white" />
-            </motion.button>
+            </button>
 
             {/* Image Counter */}
             <div
@@ -347,42 +330,35 @@ const GalleryContent = () => {
             </div>
 
             {/* Navigation Arrows */}
-            <motion.button
+            <button
               type="button"
               onClick={(e: React.MouseEvent) => {
                 e.stopPropagation();
                 goToPrevious();
               }}
-              className="absolute left-2 md:left-4 z-50 text-white/80 hover:text-white transition-colors p-2.5 md:p-3 bg-black/50 hover:bg-black/70 rounded-full backdrop-blur-sm flex"
+              className="absolute left-2 md:left-4 z-50 text-white/80 hover:text-white transition-colors p-2.5 md:p-3 bg-black/50 hover:bg-black/70 rounded-full backdrop-blur-sm flex hover:-translate-x-0.5"
               aria-label="Προηγούμενη εικόνα"
-              whileHover={{ scale: 1.1, x: -4 }}
-              whileTap={{ scale: 0.9 }}
             >
               <ChevronLeftIcon size={26} className="text-white" />
-            </motion.button>
+            </button>
 
-            <motion.button
+            <button
               type="button"
               onClick={(e: React.MouseEvent) => {
                 e.stopPropagation();
                 goToNext();
               }}
-              className="absolute right-2 md:right-4 z-50 text-white/80 hover:text-white transition-colors p-2.5 md:p-3 bg-black/50 hover:bg-black/70 rounded-full backdrop-blur-sm flex"
+              className="absolute right-2 md:right-4 z-50 text-white/80 hover:text-white transition-colors p-2.5 md:p-3 bg-black/50 hover:bg-black/70 rounded-full backdrop-blur-sm flex hover:translate-x-0.5"
               aria-label="Επόμενη εικόνα"
-              whileHover={{ scale: 1.1, x: 4 }}
-              whileTap={{ scale: 0.9 }}
             >
               <ChevronRightIcon size={26} className="text-white" />
-            </motion.button>
+            </button>
 
             {/* Image Container */}
-            <motion.div
+            <div
               className="relative w-full h-[85vh] max-w-7xl mx-4 flex items-center justify-center"
               onClick={(e: React.MouseEvent) => e.stopPropagation()}
               key={lightboxIndex}
-              initial={{ opacity: 0, scale: 0.97 }}
-              animate={{ opacity: 1, scale: 1 }}
-              transition={{ duration: 0.2 }}
             >
               <div className="relative w-full h-full bg-black flex items-center justify-center">
                 {/* ✅ Native <img>: κρατάει το φυσικό aspect ratio και περιορίζεται μόνο
@@ -408,23 +384,17 @@ const GalleryContent = () => {
               </div>
 
               {/* Image Info */}
-              <motion.div
-                className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/80 to-transparent p-4 md:p-6 pointer-events-none"
-                initial={{ y: 20, opacity: 0 }}
-                animate={{ y: 0, opacity: 1 }}
-                transition={{ delay: 0.15 }}
-              >
+              <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/80 to-transparent p-4 md:p-6 pointer-events-none">
                 <div className="flex items-center justify-center max-w-3xl mx-auto flex-wrap gap-2">
                   <div className="text-center">
                     <p className="text-white text-sm font-light">{currentImage.alt}</p>
                     <span className="text-xs text-white/40">#{currentImage.id}</span>
                   </div>
                 </div>
-              </motion.div>
-            </motion.div>
-          </motion.div>
+              </div>
+            </div>
+          </div>
         )}
-      </AnimatePresence>
     </section>
   );
 };
@@ -476,12 +446,7 @@ export default function GalleryPage() {
       <main className="min-h-screen bg-black overflow-x-hidden">
 
       {/* Hero */}
-      <motion.section
-        className="pt-32 pb-16 px-6 md:px-12 text-center"
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ duration: 0.8 }}
-      >
+      <section className="pt-32 pb-16 px-6 md:px-12 text-center">
         <div className="max-w-4xl mx-auto">
           <Link
             href="/"
@@ -499,19 +464,13 @@ export default function GalleryPage() {
             Κάθε εργασία είναι μια μοναδική δημιουργία – επιλεγμένη για εσάς.
           </p>
         </div>
-      </motion.section>
+      </section>
 
       {/* Gallery Grid */}
       <GalleryContent />
 
       {/* Nail Care Guide - ΑΜΕΤΑΒΛΗΤΟ */}
-      <motion.section
-        className="px-6 md:px-12 py-24 border-t border-gray-800"
-        initial={{ opacity: 0, y: 40 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.6 }}
-        viewport={{ once: true, margin: '-100px' }}
-      >
+      <section className="px-6 md:px-12 py-24 border-t border-gray-800">
         <div className="max-w-4xl mx-auto">
           <div className="text-center mb-14">
             <p className="text-xs tracking-[0.3em] uppercase text-rose-500 mb-4">Συμβουλές φροντίδας</p>
@@ -524,22 +483,10 @@ export default function GalleryPage() {
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
             {nailTips.map((tip, i) => (
-              <motion.div
+              <div
                 key={i}
                 className="group relative bg-gray-900 border border-gray-800 rounded-2xl p-7 overflow-hidden"
-                whileHover={{ borderColor: '#e11d48', transition: { duration: 0.3 } }}
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.4, delay: i * 0.1 }}
-                viewport={{ once: true }}
               >
-                <motion.div
-                  className="absolute top-0 left-0 h-[1px] bg-rose-500"
-                  initial={{ width: 0 }}
-                  whileHover={{ width: '100%' }}
-                  transition={{ duration: 0.7 }}
-                />
-
                 <div className="flex gap-4">
                   <div className="w-10 h-10 rounded-full border border-rose-500/30 flex items-center justify-center flex-shrink-0 text-rose-500 group-hover:bg-rose-500/10 transition-all duration-300">
                     {tip.icon}
@@ -549,11 +496,11 @@ export default function GalleryPage() {
                     <p className="text-sm text-gray-400 leading-relaxed font-light">{tip.body}</p>
                   </div>
                 </div>
-              </motion.div>
+              </div>
             ))}
           </div>
         </div>
-      </motion.section>
+      </section>
 
       </main>
       <Footer />

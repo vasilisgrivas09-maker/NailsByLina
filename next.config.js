@@ -6,7 +6,7 @@ const nextConfig = {
     imageSizes: [16, 32, 48, 64, 96, 128, 256, 384],
   },
   experimental: {
-    optimizePackageImports: ['framer-motion', '@heroicons/react'],
+    optimizePackageImports: ['@heroicons/react'],
   },
   compiler: {
     removeConsole: true,
