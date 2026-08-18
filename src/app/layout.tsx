@@ -1,6 +1,7 @@
 import React from 'react';
 import type { Metadata, Viewport } from 'next';
 import { Fraunces, DM_Sans } from 'next/font/google';
+import { SpeedInsights } from '@vercel/speed-insights/next';
 import '../styles/tailwind.css';
 import JsonLd from '@/components/JsonLd';
 import {
@@ -123,6 +124,7 @@ export default function RootLayout({
       <body className={dmSans.className}>
         <JsonLd data={salonJsonLd} />
         <JsonLd data={websiteJsonLd} />
+        <SpeedInsights />
         {children}
       </body>
     </html>
