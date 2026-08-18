@@ -36,8 +36,8 @@ const PRIORITY_COUNT = 4;
 // και πόσες προσθέτουμε κάθε φορά που ο χρήστης πλησιάζει το τέλος της λίστας.
 // Αυτό αντικαθιστά την ανάγκη για βαριά virtualization βιβλιοθήκη (π.χ. react-window)
 // όσο ο αριθμός εικόνων παραμένει σε λογικά όρια (μέχρι μερικές εκατοντάδες).
-const INITIAL_BATCH = 16;
-const BATCH_SIZE = 16;
+const INITIAL_BATCH = 32;
+const BATCH_SIZE = 12;
 
 // SVG Icons
 const XIcon = ({ size = 24, className = '' }: { size?: number; className?: string }) => (
@@ -95,7 +95,7 @@ const GalleryContent = () => {
           setVisibleCount((prev) => Math.min(prev + BATCH_SIZE, galleryImages.length));
         }
       },
-      { rootMargin: '800px 0px' }
+      { rootMargin: '400px 0px' }
     );
     observer.observe(el);
     return () => observer.disconnect();
@@ -115,11 +115,13 @@ const GalleryContent = () => {
     previousFocusRef.current = document.activeElement as HTMLElement;
     setLightboxIndex(index);
     document.body.style.overflow = 'hidden';
+    document.documentElement.style.overflow = 'hidden';
   };
 
   const closeLightbox = useCallback(() => {
     setLightboxIndex(null);
     document.body.style.overflow = 'auto';
+    document.documentElement.style.overflow = 'auto';
     previousFocusRef.current?.focus();
   }, []);
 
@@ -173,6 +175,7 @@ const GalleryContent = () => {
   useEffect(() => {
     return () => {
       document.body.style.overflow = 'auto';
+      document.documentElement.style.overflow = 'auto';
     };
   }, []);
 
