@@ -9,17 +9,17 @@ interface PreviewImage {
 
 const previewImages: PreviewImage[] = [
   {
-    src: '/assets/images/4.webp',
+    src: '/assets/images/3.webp',
     alt: '3D nail art με stiletto νύχια, λουλούδια και leopard French – Elegant Nails Αγρίνιο',
     label: '3D Nail Art',
   },
   {
-    src: '/assets/images/5.webp',
+    src: '/assets/images/9.webp',
     alt: 'Αμυγδαλωτό ημιμόνιμο nude με στρας – Elegant Nails Αγρίνιο',
     label: 'Ημιμόνιμο',
   },
   {
-    src: '/assets/images/6.webp',
+    src: '/assets/images/16.webp',
     alt: 'Γυαλιστερό nude μανικιούρ με κρυστάλλους – Elegant Nails Αγρίνιο',
     label: 'Gel Design',
   },

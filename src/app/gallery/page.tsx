@@ -315,7 +315,7 @@ const GalleryContent = () => {
             role="dialog"
             aria-modal="true"
             aria-label="Προβολή εικόνας σε πλήρη οθόνη"
-            className="fixed inset-0 z-[9999] bg-black/95 backdrop-blur-sm flex items-center justify-center overscroll-contain"
+            className="fixed inset-0 z-[9999] bg-black/95 backdrop-blur-sm flex items-center justify-center"
             onClick={closeLightbox}
             onTouchStart={handleTouchStart}
             onTouchMove={handleTouchMove}
