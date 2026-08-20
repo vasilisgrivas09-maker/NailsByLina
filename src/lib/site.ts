@@ -15,14 +15,9 @@ function resolveSiteUrl(): string {
     return explicit.replace(/\/$/, '');
   }
 
-  const vercelProduction = process.env.VERCEL_PROJECT_PRODUCTION_URL;
-  if (vercelProduction) {
-    return `https://${vercelProduction.replace(/\/$/, '')}`;
-  }
-
-  // Stable production fallback so sitemap/canonicals never ship as localhost
+  // Stable production fallback so sitemap/canonicals never ship as localhost or vercel.app
   if (process.env.NODE_ENV === 'production') {
-    return 'https://nailsbylina.vercel.app';
+    return 'https://www.nailsbylina-agrinio.gr';
   }
 
   return 'http://localhost:3000';
