@@ -116,7 +116,7 @@ const offerCatalog = {
     priceCurrency: 'EUR',
     price: String(item.amountEur ?? (item.price.replace(/[^\d.]/g, '') || '0')),
     availability: 'https://schema.org/InStock',
-    url: `${SITE_URL}/#prices`,
+    url: SITE_URL,
   })),
 };
 

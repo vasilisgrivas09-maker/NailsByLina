@@ -27,12 +27,6 @@ export default function Footer() {
             Γκαλερί
           </a>
           <a
-            href="/#prices"
-            className="font-sans text-xs font-medium text-muted-foreground hover:text-foreground transition-colors duration-200"
-          >
-            Τιμές
-          </a>
-          <a
             href={INSTAGRAM_URL}
             target="_blank"
             rel="noopener noreferrer"
