@@ -1,6 +1,7 @@
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import HeroSection from '@/app/components/HeroSection';
+import PricesSection from '@/app/components/PricesSection';
 import dynamic from 'next/dynamic';
 
 const ServicesSection = dynamic(
@@ -30,6 +31,7 @@ export default function HomePage() {
       <main className="min-h-screen bg-background overflow-x-hidden">
         <HeroSection />
         <ServicesSection />
+        <PricesSection />
         <GallerySection />
         <ContactSection />
       </main>

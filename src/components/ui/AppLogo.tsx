@@ -1,12 +1,10 @@
 'use client';
 
-import React, { memo, useMemo } from 'react';
-import AppIcon from './AppIcon';
+import React, { memo } from 'react';
 import AppImage from './AppImage';
 
 interface AppLogoProps {
   src?: string;
-  iconName?: string;
   size?: number;
   className?: string;
   onClick?: () => void;
@@ -14,33 +12,29 @@ interface AppLogoProps {
 
 const AppLogo = memo(function AppLogo({
   src = '/assets/images/app_logo.webp',
-  iconName = 'SparklesIcon',
   size = 64,
   className = '',
   onClick,
 }: AppLogoProps) {
-  const containerClassName = useMemo(() => {
-    const classes = ['flex items-center'];
-    if (onClick) classes.push('cursor-pointer hover:opacity-80 transition-opacity');
-    if (className) classes.push(className);
-    return classes.join(' ');
-  }, [onClick, className]);
+  const containerClassName = [
+    'flex items-center',
+    onClick ? 'cursor-pointer hover:opacity-80 transition-opacity' : '',
+    className,
+  ]
+    .filter(Boolean)
+    .join(' ');
 
   return (
     <div className={containerClassName} onClick={onClick}>
-      {src ? (
-        <AppImage
-          src={src}
-          alt="Elegant Nails Αγρίνιο"
-          width={size}
-          height={size}
-          className="flex-shrink-0"
-          priority={false}
-          unoptimized={src.endsWith('.svg')}
-        />
-      ) : (
-        <AppIcon name={iconName} size={size} className="flex-shrink-0" />
-      )}
+      <AppImage
+        src={src}
+        alt="Elegant Nails Αγρίνιο"
+        width={size}
+        height={size}
+        className="flex-shrink-0"
+        priority={false}
+        unoptimized={src.endsWith('.svg')}
+      />
     </div>
   );
 });

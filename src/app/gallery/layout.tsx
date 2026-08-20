@@ -1,6 +1,15 @@
 import type { ReactNode } from 'react';
 import type { Metadata } from 'next';
-import { GALLERY_DESCRIPTION, GALLERY_TITLE, OG_IMAGE, SITE_NAME, SITE_URL } from '@/lib/site';
+import JsonLd from '@/components/JsonLd';
+import {
+  GALLERY_DESCRIPTION,
+  GALLERY_TITLE,
+  OG_IMAGE,
+  OG_IMAGE_HEIGHT,
+  OG_IMAGE_WIDTH,
+  SITE_NAME,
+  SITE_URL,
+} from '@/lib/site';
 
 export const metadata: Metadata = {
   title: GALLERY_TITLE,
@@ -18,6 +27,8 @@ export const metadata: Metadata = {
     images: [
       {
         url: OG_IMAGE,
+        width: OG_IMAGE_WIDTH,
+        height: OG_IMAGE_HEIGHT,
         alt: 'Γκαλερί nail art Elegant Nails Αγρίνιο',
       },
     ],
@@ -30,10 +41,34 @@ export const metadata: Metadata = {
   },
 };
 
+const breadcrumbJsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'BreadcrumbList',
+  itemListElement: [
+    {
+      '@type': 'ListItem',
+      position: 1,
+      name: 'Αρχική',
+      item: SITE_URL,
+    },
+    {
+      '@type': 'ListItem',
+      position: 2,
+      name: GALLERY_TITLE,
+      item: `${SITE_URL}/gallery`,
+    },
+  ],
+};
+
 export default function GalleryLayout({
   children,
 }: Readonly<{
   children: ReactNode;
 }>) {
-  return children;
+  return (
+    <>
+      <JsonLd data={breadcrumbJsonLd} />
+      {children}
+    </>
+  );
 }

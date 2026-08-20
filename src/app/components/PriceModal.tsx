@@ -1,45 +1,12 @@
-"use client";
+'use client';
 
 import React, { useEffect } from 'react';
+import { PRICE_ITEMS, PRICE_NOTE } from '@/lib/prices';
 
 interface PriceModalProps {
   isOpen: boolean;
   onClose: () => void;
 }
-
-const priceItems = [
-  {
-    name: 'Ημιμόνιμο Απλό',
-    nameEn: 'Semi-Permanent',
-    price: '20',
-    badge: 'Δημοφιλές',
-  },
-  {
-    name: 'Ημιμόνιμο με Ενίσχυση',
-    nameEn: 'Semi-Permanent + Strengthening',
-    price: '25',
-    badge: null,
-  },
-  {
-    name: 'Τζελ (Gel)',
-    nameEn: 'Gel Extensions',
-    price: '30',
-    badge: null,
-  },
-  {
-    name: 'Extreme Nail Art / Sculpted',
-    nameEn: 'Nail Art & Sculpted',
-    price: 'Από 35€+',
-    badge: 'Premium',
-    priceNote: true,
-  },
-  {
-    name: 'Αφαίρεση (ξένου προϊόντος)',
-    nameEn: 'Removal - foreign product',
-    price: '5',
-    badge: null,
-  },
-];
 
 export default function PriceModal({ isOpen, onClose }: PriceModalProps) {
   useEffect(() => {
@@ -108,7 +75,7 @@ export default function PriceModal({ isOpen, onClose }: PriceModalProps) {
 
         <div className="max-md:min-h-0 max-md:flex-1 max-md:overflow-y-auto max-md:overscroll-contain">
           <div className="px-8 py-6 space-y-2 max-md:px-4 max-md:py-3 max-md:space-y-0">
-            {priceItems.map((item) => (
+            {PRICE_ITEMS.map((item) => (
               <div key={item.name} className="group flex items-center justify-between py-4 border-b border-border/50 last:border-0 max-md:py-2.5 max-md:gap-2">
                 <div className="flex items-center gap-3 min-w-0">
                   <div className="w-1.5 h-1.5 rounded-full flex-shrink-0" style={{ background: 'var(--primary)' }} />
@@ -160,9 +127,7 @@ export default function PriceModal({ isOpen, onClose }: PriceModalProps) {
                     />
                   </svg>
                 </div>
-                <p className="font-sans text-xs text-muted-foreground leading-relaxed">
-                  Οι τιμές για <span className="text-foreground font-medium">Nail Art</span> διαμορφώνονται ανάλογα με τον βαθμό δυσκολίας - stones, charms, 3D art. Επικοινωνήστε μαζί μας για προσφορά.
-                </p>
+                <p className="font-sans text-xs text-muted-foreground leading-relaxed">{PRICE_NOTE}</p>
               </div>
             </div>
           </div>

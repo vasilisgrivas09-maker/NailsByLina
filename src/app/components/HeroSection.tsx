@@ -13,7 +13,7 @@ export default function HeroSection() {
       <div className="absolute inset-0 z-0 hidden md:block">
         <Image
           src={heroDesktop}
-          alt="Elegant Nails Αγρίνιο"
+          alt="Elegant Nails Αγρίνιο — nail studio μανικιούρ και nail art"
           fill
           sizes="(max-width: 768px) 100vw, 1200px"
           quality={78}
@@ -25,7 +25,7 @@ export default function HeroSection() {
       <div className="absolute inset-0 z-0 block md:hidden">
         <Image
           src={heroMobile}
-          alt="Elegant Nails Αγρίνιο"
+          alt="Elegant Nails Αγρίνιο — nail studio μανικιούρ και nail art"
           fill
           priority
           fetchPriority="high"

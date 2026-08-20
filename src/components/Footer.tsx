@@ -19,7 +19,19 @@ export default function Footer() {
         </p>
 
         {/* Right: links */}
-        <div className="flex items-center gap-6">
+        <div className="flex items-center gap-6 flex-wrap justify-center">
+          <a
+            href="/gallery"
+            className="font-sans text-xs font-medium text-muted-foreground hover:text-foreground transition-colors duration-200"
+          >
+            Γκαλερί
+          </a>
+          <a
+            href="/#prices"
+            className="font-sans text-xs font-medium text-muted-foreground hover:text-foreground transition-colors duration-200"
+          >
+            Τιμές
+          </a>
           <a
             href={INSTAGRAM_URL}
             target="_blank"
